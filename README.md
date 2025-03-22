@@ -9,7 +9,7 @@ composer require lopatin96/lara-enum
 ```
 
 # How to use
-Publish config and local files.
+Publish config and local files:
 
 ```php
 php artisan vendor:publish --tag="lara-enum-config"
@@ -20,7 +20,7 @@ php artisan vendor:publish --tag="lara-enum-lang"
 ```
 
 ### Config
-Add key-value to lara-enum config file
+Add key-value to lara-enum config file:
 ```php
 return [
 
@@ -37,10 +37,10 @@ return [
 ];
 ```
 
-and call `$document->status->getColorProperty()`
+and call `$document->status->getColorProperty()`.
 
 ### Local
-Add key-value to lara-enum local file
+Add key-value to lara-enum local file:
 ```php
 return [
 
@@ -57,4 +57,4 @@ return [
 ];
 ```
 
-and call `$document->status->getLabelLocal()`
+and call `$document->status->getLabelLocal()`.
