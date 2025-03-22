@@ -11,7 +11,7 @@ class LaraEnumServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(
             __DIR__.'/../config/lara-enum.php', 'lara-enum'
         );
-    };
+    }
 
     public function boot()
     {
