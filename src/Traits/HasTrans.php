@@ -3,31 +3,29 @@
 namespace Lopatin96\LaraEnum\Traits;
 
 use function Symfony\Component\String\u;
+use BadMethodCallException;
 
 trait HasTrans
 {
-    public function label(array $replace = []): ?string
+    public function __call(string $name, array $arguments): mixed
     {
-        return $this->trans('label', $replace);
-    }
+        if (str_starts_with($name, 'get')) {
+            $class = str_replace('_', '-', u(class_basename(__CLASS__))->snake()->toString());
+            $suffixes = [
+                'Local' => fn($key) => trans("lara-enum.$class.$key.$this->value", $arguments),
+                'Property' => fn($key) => config("lara-enum.$class.$key.$this->value")
+            ];
 
-    public function description(array $replace = []): ?string
-    {
-        return $this->trans('description', $replace);
-    }
+            foreach ($suffixes as $suffix => $resolver) {
+                if (str_ends_with($name, $suffix)) {
+                    $key = lcfirst(substr($name, 3, -strlen($suffix)));
+                    $result = $resolver($key);
 
-    private function trans(string $attribute, array $replace = []): ?string
-    {
-        return trans($this->getKey($attribute), $replace);
-    }
+                    return $result ?? throw new BadMethodCallException("The method $name is not found.");
+                }
+            }
+        }
 
-    private function getKey(string $attribute): ?string
-    {
-        return 'enums/'
-            . str_replace('_', '-', u(class_basename(__CLASS__))->snake()->toString())
-            . '.'
-            . $this->value
-            . ':'
-            . $attribute;
+        throw new BadMethodCallException("The method $name is not found.");
     }
 }
